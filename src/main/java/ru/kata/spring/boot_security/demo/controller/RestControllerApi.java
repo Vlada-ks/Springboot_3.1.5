@@ -2,6 +2,7 @@ package ru.kata.spring.boot_security.demo.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,8 +33,9 @@ public class RestControllerApi {
     }
 
     @GetMapping("/users")
-    public List<User> showAllUser() {
-        return userService.getAllUsers();
+    public ResponseEntity<List<User>> showAllUser() {
+        List<User> userList = userService.getAllUsers();
+        return ResponseEntity.ok(userList);
     }
 
 //    @PostMapping("/new")
