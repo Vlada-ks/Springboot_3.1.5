@@ -1,11 +1,13 @@
 package ru.kata.spring.boot_security.demo.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
@@ -22,6 +24,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import java.util.Collection;
+
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -64,11 +67,12 @@ public class User implements UserDetails {
     private String password;
 
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JsonIgnore
     @JoinTable(
             name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
     )
     private Collection<Role> roles;
 

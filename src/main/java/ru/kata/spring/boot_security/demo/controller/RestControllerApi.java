@@ -1,82 +1,70 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
+
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 import org.springframework.web.bind.annotation.RestController;
+
 import ru.kata.spring.boot_security.demo.model.User;
-import ru.kata.spring.boot_security.demo.service.UserService;
+
 import ru.kata.spring.boot_security.demo.service.UserServiceImpl;
 
 import javax.validation.Valid;
-import java.security.Principal;
+
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/users")
 public class RestControllerApi {
 
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
 
-    public RestControllerApi(UserService userService) {
-        this.userService = userService;
+    public RestControllerApi(UserServiceImpl userServiceImpl) {
+        this.userServiceImpl = userServiceImpl;
+
     }
 
-    @GetMapping("/users")
-    public ResponseEntity<List<User>> showAllUser() {
-        List<User> userList = userService.getAllUsers();
-        return ResponseEntity.ok(userList);
+    @GetMapping
+    public ResponseEntity<List<User>> showAllUsers() {
+        return ResponseEntity.ok(userServiceImpl.getAllUsers());
     }
 
-//    @PostMapping("/new")
-//    public String addNewUser(Model model) {
-//        model.addAttribute("newUser", new User());
-//        model.addAttribute("roles", roleServiceImpl.getListRoles());
-//        return "redirect:/admin";
-//    }
-//
-//    @PostMapping()
-//    public String saveUser(@ModelAttribute("newUser") @Valid User user, BindingResult bindingResult, Model model) {
-//        model.addAttribute("roles", roleServiceImpl.getListRoles());
-//        if (bindingResult.hasErrors())
-//            return "redirect:/admin";
-//        userServiceImpl.saveUser(user);
-//        return "redirect:/admin";
-//    }
-//
-//    @GetMapping("/{id}")
-//    public String showUpdate(@PathVariable("id") Integer id, Model model) {
-//        User user = userServiceImpl.getUserById(id);
-//        model.addAttribute("roles", roleServiceImpl.getListRoles());
-//        model.addAttribute("newUpdate", user);
-//        return "redirect:/admin";
-//    }
-//
-//
-//    @PostMapping("/{id}")
-//    public String updateUser(@PathVariable("id") Integer id, @Valid User user, BindingResult bindingResult, Model model) {
-//        model.addAttribute("newUpdate", userServiceImpl.getUserById(id));
-//        model.addAttribute("roles", roleServiceImpl.getListRoles());
-//        if (bindingResult.hasErrors())
-//            return "redirect:/admin";
-//        userServiceImpl.updateUser(user);
-//        return "redirect:/admin";
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public String deleteUser(@PathVariable("id") Integer id) {
-//        userServiceImpl.deleteUser(id);
-//        return "redirect:/admin";
-//    }
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable("id") Integer id) {
+        User user = userServiceImpl.getUserById(id);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @PostMapping
+    public ResponseEntity<HttpStatus> addNewUser(@RequestBody @Valid User newUser) {
+        userServiceImpl.saveUser(newUser);
+        return ResponseEntity.ok(HttpStatus.CREATED);
+    }
+
+    @PutMapping
+    public ResponseEntity<HttpStatus> updateUser(@RequestBody @Valid User userUpdate) {
+        userServiceImpl.updateUser(userUpdate);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable Integer id) {
+        userServiceImpl.deleteUser(id);
+        return ResponseEntity.ok(HttpStatus.OK);
+    }
+
 
 }
