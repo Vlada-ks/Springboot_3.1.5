@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import java.util.HashSet;
@@ -23,7 +24,7 @@ public class Role implements GrantedAuthority {
     private String name;
 
 
-    @ManyToMany(mappedBy = "roles")
+    @OneToMany(mappedBy = "roles")
     private Set<User> users = new HashSet<>();
 
     public Role() {

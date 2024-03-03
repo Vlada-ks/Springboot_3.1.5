@@ -18,6 +18,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -67,8 +68,8 @@ public class User implements UserDetails {
     private String password;
 
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JsonIgnore
+    @OneToMany(cascade = CascadeType.PERSIST)
+//    @JsonIgnore
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
