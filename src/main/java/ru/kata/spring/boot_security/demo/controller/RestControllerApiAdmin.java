@@ -25,14 +25,14 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/users")
-public class RestControllerApi {
+@RequestMapping("/api/admins")
+public class RestControllerApiAdmin {
 
 
     private final UserServiceImpl userServiceImpl;
 
 
-    public RestControllerApi(UserServiceImpl userServiceImpl) {
+    public RestControllerApiAdmin(UserServiceImpl userServiceImpl) {
         this.userServiceImpl = userServiceImpl;
 
     }
