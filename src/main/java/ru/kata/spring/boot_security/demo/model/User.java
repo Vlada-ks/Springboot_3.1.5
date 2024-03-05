@@ -1,13 +1,12 @@
 package ru.kata.spring.boot_security.demo.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.validation.annotation.Validated;
 
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 
@@ -17,7 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
@@ -30,6 +29,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Entity
+@Validated
 @Table(name = "user")
 public class User implements UserDetails {
 
@@ -68,8 +68,7 @@ public class User implements UserDetails {
     private String password;
 
 
-    @OneToMany(cascade = CascadeType.PERSIST)
-//    @JsonIgnore
+    @OneToMany
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),

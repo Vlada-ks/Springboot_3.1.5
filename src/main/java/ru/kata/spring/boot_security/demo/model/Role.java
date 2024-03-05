@@ -4,7 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -54,10 +54,6 @@ public class Role implements GrantedAuthority {
     public String getName() {
         return name;
     }
-
-//    public String getRoleNames() {
-//        return getName().replace("ROLE_", "");
-//    }
 
     public void setName(String name) {
         this.name = name;
