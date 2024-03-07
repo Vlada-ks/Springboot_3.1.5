@@ -4,6 +4,7 @@ package ru.kata.spring.boot_security.demo.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 
@@ -56,6 +57,7 @@ public class RestControllerApiAdmin {
     }
 
     @PostMapping("/addUser")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HttpStatus> addUser(@RequestBody @Valid User newUser, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new UserValidationException(bindingResult);
@@ -65,6 +67,7 @@ public class RestControllerApiAdmin {
     }
 
     @PatchMapping("/updateUser")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HttpStatus> updateUser(@RequestBody @Valid User userUpdate, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             throw new UserValidationException(bindingResult);
@@ -74,6 +77,7 @@ public class RestControllerApiAdmin {
     }
 
     @DeleteMapping("/deleteUser/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<HttpStatus> deleteUser(@PathVariable Integer id) {
         userServiceImpl.deleteUser(id);
         return ResponseEntity.ok(HttpStatus.OK);

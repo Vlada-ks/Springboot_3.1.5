@@ -1,21 +1,27 @@
 package ru.kata.spring.boot_security.demo.model;
 
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
+
 import javax.persistence.Table;
 
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Table(name = "roles")
+
 public class Role implements GrantedAuthority {
 
     @Id
@@ -24,7 +30,8 @@ public class Role implements GrantedAuthority {
     private String name;
 
 
-    @OneToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles")
+    @JsonIgnore
     private Set<User> users = new HashSet<>();
 
     public Role() {
